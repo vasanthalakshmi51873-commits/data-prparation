@@ -1,0 +1,59 @@
+import pandas as pd
+
+# Step 1: Load the Titanic dataset
+url = "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
+
+df = pd.read_csv(url)
+
+# Step 2: Display the original dataset
+print("ORIGINAL DATASET")
+print(df.head())
+
+# Step 3: Check the dataset information
+print("\nDATASET INFORMATION")
+print(df.info())
+
+# Step 4: Check missing values
+print("\nMISSING VALUES")
+print(df.isnull().sum())
+
+# Step 5: Check duplicate records
+print("\nDUPLICATE RECORDS")
+print(df.duplicated().sum())
+
+# Step 6: Check data types
+print("\nDATA TYPES")
+print(df.dtypes)
+
+# Step 7: Remove duplicate records
+df = df.drop_duplicates()
+
+# Step 8: Fill missing Age values with median
+df["Age"] = df["Age"].fillna(df["Age"].median())
+
+# Step 9: Fill missing Embarked values with mode
+df["Embarked"] = df["Embarked"].fillna(df["Embarked"].mode()[0])
+
+# Step 10: Fill missing Cabin values
+df["Cabin"] = df["Cabin"].fillna("Unknown")
+
+# Step 11: Convert Age and Fare to numeric data types
+df["Age"] = pd.to_numeric(df["Age"], errors="coerce")
+df["Fare"] = pd.to_numeric(df["Fare"], errors="coerce")
+
+# Step 12: Remove extra spaces from column names
+df.columns = df.columns.str.strip()
+
+# Step 13: Check missing values after cleaning
+print("\nMISSING VALUES AFTER CLEANING")
+print(df.isnull().sum())
+
+# Step 14: Check duplicates after cleaning
+print("\nDUPLICATES AFTER CLEANING")
+print(df.duplicated().sum())
+
+# Step 15: Save the cleaned dataset
+df.to_csv("cleaned_titanic.csv", index=False)
+
+print("\nDATA CLEANING COMPLETED SUCCESSFULLY!")
+print("Cleaned dataset saved as cleaned_titanic.csv")
